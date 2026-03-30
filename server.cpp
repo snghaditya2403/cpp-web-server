@@ -41,6 +41,7 @@ void handle_client(int client_fd){
     std::string http_response;
 
     if (file.is_open()) {
+		// File found
         std::stringstream file_buffer;
         file_buffer << file.rdbuf();
         std::string body = file_buffer.str();
@@ -52,7 +53,7 @@ void handle_client(int client_fd){
                         body;
         file.close();
     } else {
-        // File not found on the hard drive! Send 404
+        // File not found on the hard drive
         std::string body = "<html><body><h1>404 Not Found</h1><p>The file " + file_path + " does not exist.</p></body></html>";
         http_response = "HTTP/1.1 404 Not Found\r\n"
                         "Content-Type: text/html\r\n"
