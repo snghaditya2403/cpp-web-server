@@ -11,7 +11,7 @@ A multi-threaded HTTP/1.1 web server built from scratch in C++ using POSIX socke
 
 ## How to Build and Run
 ```bash
-g++ -std=c++17 server.cpp -o server -lpthread
+g++ -std=c++17 server.cpp -o server -pthread
 ./server
 ```
 Then open your browser and go to `http://localhost:8080`.
