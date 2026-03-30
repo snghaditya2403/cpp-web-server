@@ -19,33 +19,28 @@ void handle_client(int client_fd){
 	ss >> path;
 	ss >> protocol;
 
-// ... (Previous code: reading the buffer and extracting the path using stringstream) ...
 
     std::cout << "[Worker Thread " << std::this_thread::get_id() << "] requested: " << path << "\n";
 
-    // 1. Dynamic Pathing: Default to index.html if they just type "/", otherwise use the path
     std::string file_path;
     if (path == "/") {
         file_path = "index.html";
     } else {
-        // .substr(1) removes the leading '/' so "/style.css" becomes "style.css"
         file_path = path.substr(1); 
     }
 
-    // 2. Determine the MIME Type based on the file extension
+    // Determine the MIME Type based on the file extension
     std::string content_type = "text/plain"; // Default fallback
     if (file_path.find(".html") != std::string::npos) content_type = "text/html";
     else if (file_path.find(".css") != std::string::npos) content_type = "text/css";
     else if (file_path.find(".js") != std::string::npos) content_type = "application/javascript";
     else if (file_path.find(".jpg") != std::string::npos || file_path.find(".jpeg") != std::string::npos) content_type = "image/jpeg";
 
-    // 3. Open the file in binary mode (required for images/compiled files)
     std::ifstream file(file_path, std::ios::binary);
 
     std::string http_response;
 
     if (file.is_open()) {
-        // File exists! Read it and send 200 OK
         std::stringstream file_buffer;
         file_buffer << file.rdbuf();
         std::string body = file_buffer.str();
